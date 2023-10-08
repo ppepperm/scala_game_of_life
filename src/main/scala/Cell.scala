@@ -2,21 +2,21 @@ import scalafx.scene.paint.Color
 import scalafx.scene.paint.Color.Red
 
 class Cell(
-  private val x :Int,
-  private val y :Int,
-  private var state :Boolean = true,
-  private var nextState :Boolean = false,
+  private var state :Int = 0,
+  private var nextState: Int = 0,
   private val Color :Color = Red){
 
-  def getState: Boolean = state
-  def getNextState: Boolean = nextState
+  def getState: Int = state
 
-  def setState(state: Boolean): Unit = {
-    this.state = state
+  def setNextState(state: Int): Cell = {
+    this.nextState = state
+    this
   }
 
-  def setNextState(state: Boolean): Unit = {
-    this.nextState = state
+  def updateState(): Cell = {
+    this.state =this.nextState
+    this.nextState = 0
+    this
   }
 
 }
