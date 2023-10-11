@@ -1,16 +1,12 @@
 package CellField
 
 import scalafx.scene.paint.Color
-import scalafx.scene.paint.Color.Red
+import scalafx.scene.paint.Color.{Red, White}
 
 class Cell(
   private var state :Int = 0,
   private var nextState: Int = 0,
-  val Color :Color = Red){
-
-  def this() = {
-    this(0, 0, Red)
-  }
+  val Color :Color = White){
 
   def getState: Int = state
 

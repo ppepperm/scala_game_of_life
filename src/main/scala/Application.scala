@@ -21,27 +21,31 @@ object Application extends JFXApp3 {
     }
     //hardcode
     field(10)(10) = new Cell(1, 0)
-    field(10)(11) = new Cell(1, 0)
     field(11)(10) = new Cell(1, 0)
+    field(12)(10) = new Cell(1, 0)
+    field(10)(13) = new Cell(1, 0)
+    field(11)(13) = new Cell(1, 0)
+    field(12)(13) = new Cell(1, 0)
     //
     FieldState(field)
   }
 
   import scala.concurrent.ExecutionContext.Implicits.global
-
   def gameLoop(update: () => Unit): Unit =
     Future {
       update()
-      Thread.sleep(80)
+      Thread.sleep(100)
     }.flatMap(_ => Future(gameLoop(update)))
 
 
   override def start(): Unit = {
     val state = ObjectProperty(initField(w, h))
     val frame = IntegerProperty(0)
+    var run = false
 
-    frame.onChange{
-      state.update(state.value.newState())
+    frame.onChange {
+      if (run)
+        state.update(state.value.newState())
     }
 
     stage = new JFXApp3.PrimaryStage {
@@ -50,11 +54,20 @@ object Application extends JFXApp3 {
       scene = new Scene {
         fill = Black
         content = state.value.rectangles
+        onKeyPressed = key => key.getText match {
+          case "s" => run = true
+          case _ => run = false
+        }
+        onMouseClicked = key => {
+          state.update(state.value.addCell(key.getX, key.getY))
+        }
+
         state.onChange(Platform.runLater {
           content = state.value.rectangles
         })
       }
     }
+
     gameLoop(() => frame.update(frame.value + 1))
   }
 }
