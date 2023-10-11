@@ -1,11 +1,37 @@
 package CellField
 
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.Rectangle
+import scalafx.scene.paint.Color.White
+import scalafx.scene.Node
+import scalafx.scene.shape.{Line, Rectangle}
 
 
-case class FieldState (field: Array[Array[Cell]])
+case class FieldState (field: Array[Array[Cell]], w: Int = 1280, h: Int = 920)
 {
+  private val lines: List[Node] = {
+    var list = List[Node]()
+    for (x <- 0 to w by 20 )
+      list = new Line{
+        stroke=White
+        strokeWidth = 1
+        startX = x
+        startY = 0
+        endX = x
+        endY = h
+      } +: list
+
+    for (y <- 0 to h by 20 )
+      list = new Line {
+        stroke=White
+        strokeWidth = 1
+        fill = White
+        startX = 0
+        startY = y
+        endX = w
+        endY = y
+      } +: list
+    list
+  }
 
   def newState(): FieldState = {
 
@@ -35,24 +61,25 @@ case class FieldState (field: Array[Array[Cell]])
   }
 
   def addCell(x: Double, y :Double): FieldState = {
-    val i = x.toInt/10
-    val j = y.toInt/10
+    val i = x.toInt/20
+    val j = y.toInt/20
     field(j)(i) = new Cell(1, 0)
 
-    FieldState(field.clone())
+    FieldState(field.clone(), w, h)
   }
 
-  def rectangles: List[Rectangle] = {
-    var list= List[Rectangle]()
+  def rectangles: List[Node] = {
+    var list= List[Node]()
     for {
       j <- field.indices
       i <- field(0).indices
     } {
       if (field(j)(i).getState == 1) {
-       list = square(i * 10, j * 10, field(j)(i).Color) +: list
+        list = square(i * 20, j * 20, field(j)(i).Color) +: list
+
       }
     }
-    list
+    lines ::: list
   }
 
 
@@ -72,8 +99,8 @@ case class FieldState (field: Array[Array[Cell]])
   private def square(xr: Double, yr: Double, color: Color) = new Rectangle {
     x = xr
     y = yr
-    width = 10
-    height = 10
+    width = 20
+    height = 20
     fill = color
   }
 

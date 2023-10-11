@@ -8,11 +8,11 @@ import scalafx.scene.paint.Color._
 import scala.concurrent.Future
 
 object Application extends JFXApp3 {
-  val w = 1280
-  val h = 920
+  val w = 1200
+  val h = 900
 
   def initField(w: Int, h: Int): FieldState = {
-    val field = Array.ofDim[Cell](h/10, w/10)
+    val field = Array.ofDim[Cell](h/20, w/20)
     for {
       j <- field.indices
       i <- field(0).indices
@@ -20,7 +20,7 @@ object Application extends JFXApp3 {
       field(j)(i) = new Cell()
     }
 
-    FieldState(field)
+    FieldState(field, w, h)
   }
 
   import scala.concurrent.ExecutionContext.Implicits.global
@@ -49,6 +49,10 @@ object Application extends JFXApp3 {
         content = state.value.rectangles
         onKeyPressed = key => key.getText match {
           case "s" => run = true
+          case "r" =>
+            run = false
+            state.update(initField(w, h))
+
           case _ => run = false
         }
         onMouseClicked = key => {
