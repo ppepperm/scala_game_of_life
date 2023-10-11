@@ -15,11 +15,7 @@ case class FieldState (field: Array[Array[Cell]])
     }{
       val count = getCount(i, j)
       val cell = field(j)(i)
-      if (j == 11 && i == 10){
-        //println(cell.getState + " " + count)
-        val newCell = cell.setNextState(1)
-        //println(newCell.getState + " " + newCell.getState)
-      }
+
       field(j)(i) = (cell.getState, count) match {
         case (1, 2) => cell.setNextState(1)
         case (1, 3) => cell.setNextState(1)
