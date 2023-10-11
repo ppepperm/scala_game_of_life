@@ -19,14 +19,7 @@ object Application extends JFXApp3 {
     } {
       field(j)(i) = new Cell()
     }
-    //hardcode
-    field(10)(10) = new Cell(1, 0)
-    field(11)(10) = new Cell(1, 0)
-    field(12)(10) = new Cell(1, 0)
-    field(10)(13) = new Cell(1, 0)
-    field(11)(13) = new Cell(1, 0)
-    field(12)(13) = new Cell(1, 0)
-    //
+
     FieldState(field)
   }
 
